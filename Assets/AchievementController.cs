@@ -16,9 +16,33 @@ public class AchievementController : MonoBehaviour {
 	}
 }
 
-class AbstractAchievement
+abstract class AbstractAchievement
 {
-    GameState gameState;
-    virtual bool IsEarned() = 0;
-    virtual string GetName() = 0;
+    protected bool isGotNotied = false;
+    public abstract bool IsEarned() ;
+    public abstract bool IsNotied() ;
+    public abstract string GetName() ;
+    public abstract string GetDescription() ;
+};
+
+class GetStartedAchievement : AbstractAchievement
+{
+    public override string GetName() { return "What do we do now?"; }
+    public override string GetDescription() { return "Greetings to you!"; }
+    public override bool IsEarned()
+    {
+        return false;
+    }
+    public override bool IsNotied() { return isGotNotied; }
+};
+
+class ControllerAchievement : AbstractAchievement
+{
+    public override string GetName() { return "Controller WTF!?"; }
+    public override string GetDescription() { return "Good luck with your friends."; }
+    public override bool IsEarned()
+    {
+        return false;
+    }
+    public override bool IsNotied() { return isGotNotied; }
 };
