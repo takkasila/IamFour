@@ -16,7 +16,7 @@ public struct BodyPartJoint2D
 
 public class PlayerController : MonoBehaviour {
 
-    public float rotationSpeed = 300;
+    public float rotationSpeed = 400;
 
     // Left Arm
 
@@ -70,6 +70,11 @@ public class PlayerController : MonoBehaviour {
     public BodyPartJoint2D rightUpperLeg;
     public BodyPartJoint2D rightLowerLeg;
 
+    // Waist Joint
+
+    public HingeJoint2D waistJoint;
+    public KeyCode waistKey = KeyCode.Space;
+
 
 	// Use this for initialization
 	void Start () {
@@ -104,20 +109,21 @@ public class PlayerController : MonoBehaviour {
 
         BodyPartMovement(rightUpperLeg);
         BodyPartMovement(rightLowerLeg);
+
+        MoveWaist();
     }
 
     // Handle every part movement
     void BodyPartMovement(BodyPartJoint2D joint) {
         RotateBodyPart(joint.hinge, Input.GetKey(joint.keyCW) ? rotationSpeed : (Input.GetKey(joint.keyCCW) ? -rotationSpeed : 0));
-        /*
-        Debug.Log(joint+" jointSpeed: "+Mathf.Abs(joint.hinge.jointSpeed));
-        if (Mathf.Abs(joint.hinge.jointSpeed)<=100) {
+    }
 
-            JointMotor2D motor = joint.hinge.motor;
-            motor.motorSpeed = 0;
-            joint.hinge.motor = motor;
+    // Waist movement
+    void MoveWaist() {
+        if (Input.GetKey(waistKey)) {
+            Debug.Log("Move ya waist bitch!");
+            RotateBodyPart(waistJoint, rotationSpeed);
         }
-        */
     }
 
     // Rotate Part
@@ -127,7 +133,6 @@ public class PlayerController : MonoBehaviour {
         }
         else {
             JointMotor2D motor = bodyPartJoint.motor;
-            Debug.Log("jointSpeed: "+bodyPartJoint.jointSpeed);
             motor.motorSpeed = 0;
             bodyPartJoint.motor = motor;
             motor = bodyPartJoint.motor;
