@@ -70,11 +70,6 @@ public class PlayerController : MonoBehaviour {
     public BodyPartJoint2D rightUpperLeg;
     public BodyPartJoint2D rightLowerLeg;
 
-    // Waist Joint
-
-    public HingeJoint2D waistJoint;
-    public KeyCode waistKey = KeyCode.Space;
-
 
 	// Use this for initialization
 	void Start () {
@@ -109,21 +104,11 @@ public class PlayerController : MonoBehaviour {
 
         BodyPartMovement(rightUpperLeg);
         BodyPartMovement(rightLowerLeg);
-
-        MoveWaist();
     }
 
     // Handle every part movement
     void BodyPartMovement(BodyPartJoint2D joint) {
         RotateBodyPart(joint.hinge, Input.GetKey(joint.keyCW) ? rotationSpeed : (Input.GetKey(joint.keyCCW) ? -rotationSpeed : 0));
-    }
-
-    // Waist movement
-    void MoveWaist() {
-        if (Input.GetKey(waistKey)) {
-            Debug.Log("Move ya waist bitch!");
-            RotateBodyPart(waistJoint, rotationSpeed);
-        }
     }
 
     // Rotate Part

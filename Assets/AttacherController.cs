@@ -17,9 +17,11 @@ public class AttacherController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
         if (isBeingCollided) {
             CheckInput();   
         }
+
 	}
 
     void CheckInput() {
@@ -35,7 +37,6 @@ public class AttacherController : MonoBehaviour {
         if (!attachJoint.enabled) {
             attachJoint.enabled = true;
 
-            Debug.Log("Contact point: "+collidingObject.contacts[0].point);
             Vector3 collisionPoint = collidingObject.contacts[0].point;
             attachJoint.connectedBody = collidingObject.gameObject.rigidbody2D;
 
@@ -43,8 +44,6 @@ public class AttacherController : MonoBehaviour {
             Vector3 collidingObjectLocalPosition = collidingObjectTransform.InverseTransformPoint(collisionPoint);
             Transform thisTransform = this.gameObject.transform;
             Vector3 thisLocalPosition = thisTransform.InverseTransformPoint(collisionPoint);
-            Debug.Log("collidingObjectLocalPosition: " + collidingObjectLocalPosition);
-            Debug.Log("thisLocalPosition: " + thisLocalPosition);
             attachJoint.anchor = thisLocalPosition;
             attachJoint.connectedAnchor = collidingObjectLocalPosition;            
         }
@@ -52,7 +51,6 @@ public class AttacherController : MonoBehaviour {
 
     void Deattach() {
         attachJoint.enabled = false;
-        Debug.Log("Deattached!");
     }
 
     // Attach to Object

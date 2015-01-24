@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 public class ArchievementNotic : MonoBehaviour {
 
@@ -14,32 +15,75 @@ public class ArchievementNotic : MonoBehaviour {
     public Text achievementMsg;
     public Text descriptionMsg;
 
+    List<ArchievementData> popList = new List<ArchievementData>();
+
+
+
+
     float timer = 0;
 	
     void Start()
     {
-        archievementUnlock("\"YEAH!\"", "You done it!");
-        Debug.Log("eiei: "+Screen.width+" "+Screen.height);
+        archievementUnlock("What do we do now?","Greetings to you!");
     }
 
 	// Update is called once per frame
 	void Update () {
-       timer += Time.deltaTime;
-       if(timer >= delay)
+
+
+        if(popList.Count > 0)
         {
-            Vector3 lerpTemp = Vector3.Lerp(notiBG.position, hidePos, translateSpeed);
-            notiBG.position = new Vector2(lerpTemp.x, lerpTemp.y);
-       }
+            if(popList[0].isStart)
+            {
+                startPos = new Vector2 (Screen.width / 2, Screen.height - notiBG.rect.height/2 - 10);
+                hidePos = new Vector2 (Screen.width / 2, Screen.height + notiBG.rect.height + 10);
+                achievementMsg.text = popList[0].achievement;
+                descriptionMsg.text = popList[0].description;
+                notiBG.position = startPos;
+                timer = 0;
+                popList[0].isStart = false;
+            }
+            else
+            {
+                timer += Time.deltaTime;
+                if(timer >= delay)
+                {
+                    Vector3 lerpTemp = Vector3.Lerp(notiBG.position, hidePos, translateSpeed);
+                    notiBG.position = new Vector2(lerpTemp.x, lerpTemp.y);
+
+                    if(Vector2.Distance(notiBG.position, hidePos) <= 1)
+                    {
+                        notiBG.position = hidePos;
+                        popList.RemoveAt(0);
+                    }
+               }
+
+            }
+        }
+
+        //delay
+       
 	}
 
     public void archievementUnlock(string achievement, string description)
     {
-        startPos = new Vector2 (Screen.width / 2, 380);
-        hidePos = new Vector2 (Screen.width / 2, 800);
-        achievementMsg.text = achievement;
-        descriptionMsg.text = description;
-        notiBG.position = startPos;
-        timer = 0;
-        Debug.Log("k");
+        popList.Add(new ArchievementData(achievement, description));
+
+        /*
+        */
+    }
+}
+
+public class ArchievementData
+{
+    public bool isStart = true;
+    public string achievement;
+    public string description;
+
+    public ArchievementData(string achievement, string description)
+    {
+        this.achievement = achievement;
+        this.description = description;
+
     }
 }

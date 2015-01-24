@@ -5,14 +5,24 @@ using System.Collections.Generic;
 
 public class TouchLog
 {
+    string author;
     string name;
     string tag;
-    public TouchLog(string name, string tag)
+    int frameStamp;
+
+    public TouchLog(string author, string name, string tag, int frameStamp)
     {
+        this.author = author;
         this.name = name;
         this.tag = tag;
+        this.frameStamp = frameStamp;
+        //TimeStamp = Time.getFrameCount() <-Unity Time
     }
 
+    public string getAuthor()
+    {
+        return author;
+    }
     public string getName()
     {
         return name;
@@ -21,31 +31,29 @@ public class TouchLog
     {
         return tag;
     }
+    public int getFrameStamp()
+    {
+        return frameStamp;
+    }
 }
 
 public class GameState : MonoBehaviour {
 
     static List<TouchLog> touchLogList = new List<TouchLog>();
 
-
-	void Start () {
-
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
-    public List<TouchLog> getTouchLogList()
+    public static List<TouchLog> getTouchLogList()
     {
         return touchLogList;
     }
-    public TouchLog getLastestTouchLog()
+    public static TouchLog getLastestTouchLog()
     {
         if (touchLogList.Count <= 0)
             return null;
         return touchLogList[touchLogList.Count - 1];
+    }
+    public static void submitTouchLog(TouchLog submitLog)
+    {
+        touchLogList.Add(submitLog);
     }
 
 
