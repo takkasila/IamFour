@@ -5,7 +5,7 @@ public class Explosion2D : MonoBehaviour {
 
 
     public GameObject explosionEffect;
-    public float explosionForce= 1000;
+    public float explosionForce = 1000;
     public float explosionRadius = 1000;
     public float explosionDelay = 0;
     float timer = 0;
@@ -17,7 +17,6 @@ public class Explosion2D : MonoBehaviour {
 	void Update () {
         if(trigger)
         {
-
             timer += Time.deltaTime;
             if(timer >= explosionDelay)
             {
@@ -26,24 +25,24 @@ public class Explosion2D : MonoBehaviour {
                 foreach (Collider2D hit in colliders2D)
                 {
                     Debug.Log("YEA");
-
                     if (hit && hit.rigidbody2D)
                     {
                         AddExplosionForce2D(hit.rigidbody2D, explosionForce, explosionPos, explosionRadius);
-
                     }
                 }
                 Instantiate(explosionEffect, explosionPos, Quaternion.identity);
                 Destroy(gameObject);
             }
         }
-	
 	}
     void OnCollisionEnter2D(Collision2D something)
     {
         if(something.gameObject.tag == "Player")
         {
             trigger = true;
+            TouchLog touchLog = new TouchLog(gameObject.name, gameObject.tag, something.gameObject.name, something.gameObject.tag, Time.frameCount);
+            Debug.Log(touchLog);
+            GameState.submitTouchLog(touchLog);
         }
     }
 

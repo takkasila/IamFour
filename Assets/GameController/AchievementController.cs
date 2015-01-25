@@ -31,6 +31,11 @@ public class AchievementController : MonoBehaviour {
                 new NoMoreSchoolAchievement(),
                 new StairFallRagdollAchievement(),
                 new SorryMomAchievement(),
+                new MichaelBayAchievement(),
+                new EmptyCupAchievement(),
+                new TwisterAchievement(),
+                new CoffeeAchievement(),
+                new LastFridayNightAchievement(),
             };
 	}
 	
@@ -334,7 +339,6 @@ class NoMoreSchoolAchievement : AbstractAchievement
             if (touched.getAuthorTag() == "Tracker" && touched.getTag() == "Book") {
                 string bookName = touched.getName();
                 if (!books.Contains(bookName)) {
-                    Debug.Log("BookName: "+bookName);
                     books.Add(bookName);
                 }
             }
@@ -355,7 +359,6 @@ class StairFallRagdollAchievement : AbstractAchievement
     public override bool IsEarned()
     {
         List<TouchLog> playerTouchLog = GameState.getTouchLogList();
-        List<string> books = new List<string>();
         foreach (TouchLog touched in playerTouchLog) {
             if (touched.getAuthorTag() == "Player" && touched.getTag() == "Floor" && touched.getName() == "Floor2") {
                 return true;
@@ -376,7 +379,6 @@ class SorryMomAchievement : AbstractAchievement
     public override bool IsEarned()
     {
         List<TouchLog> playerTouchLog = GameState.getTouchLogList();
-        List<string> books = new List<string>();
         foreach (TouchLog touched in playerTouchLog) {
             if (touched.getAuthorTag() == "Player" && touched.getTag() == "Chandelier") {
                 return true;
@@ -385,24 +387,106 @@ class SorryMomAchievement : AbstractAchievement
         return false;
     }
 }
-/*
-class SorryMomAchievement : AbstractAchievement
+
+class MichaelBayAchievement : AbstractAchievement
 {
     public override string Name() { 
-        return "Sorry, Mom";
+        return "Michael Bay";
     }
     public override string Description() { 
-        return "Hit chandelier.";
+        return "What!? Grenade!?";
     }
     public override bool IsEarned()
     {
         List<TouchLog> playerTouchLog = GameState.getTouchLogList();
-        List<string> books = new List<string>();
         foreach (TouchLog touched in playerTouchLog) {
-            if (touched.getAuthorTag() == "Player" && touched.getTag() == "Chandelier") {
+            if (touched.getAuthorTag() == "Grenade" && 
+                (touched.getTag() == "Floor" || touched.getTag() == "Player")) {
                 return true;
             }
         }
         return false;
     }
-}*/
+}
+
+class EmptyCupAchievement : AbstractAchievement
+{
+    public override string Name() { 
+        return "Empty cup? WHY?";
+    }
+    public override string Description() { 
+        return "Touch empty cup.";
+    }
+    public override bool IsEarned()
+    {
+        List<TouchLog> playerTouchLog = GameState.getTouchLogList();
+        foreach (TouchLog touched in playerTouchLog) {
+            if (touched.getAuthorTag() == "Player" && 
+                (touched.getAuthor() == "Left Hand" || touched.getAuthor() == "Right Hand") &&
+                touched.getName() == "Cup") {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+class TwisterAchievement : AbstractAchievement
+{
+    public override string Name() { 
+        return "Tall dude's problem";
+    }
+    public override string Description() { 
+        return "Got spin by ceiling fan.";
+    }
+    public override bool IsEarned()
+    {
+        List<TouchLog> playerTouchLog = GameState.getTouchLogList();
+        foreach (TouchLog touched in playerTouchLog) {
+            if (touched.getAuthorTag() == "Player" && touched.getName() == "PadLom") {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+class CoffeeAchievement : AbstractAchievement
+{
+    public override string Name() { 
+        return "Coffee Lover";
+    }
+    public override string Description() { 
+        return "Touch a coffee pot.";
+    }
+    public override bool IsEarned()
+    {
+        List<TouchLog> playerTouchLog = GameState.getTouchLogList();
+        foreach (TouchLog touched in playerTouchLog) {
+            if (touched.getAuthorTag() == "Player" && touched.getName() == "TeaPot") {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+class LastFridayNightAchievement : AbstractAchievement
+{
+    public override string Name() { 
+        return "Last Friday Night";
+    }
+    public override string Description() { 
+        return "Bump a balloon.";
+    }
+    public override bool IsEarned()
+    {
+        List<TouchLog> playerTouchLog = GameState.getTouchLogList();
+        foreach (TouchLog touched in playerTouchLog) {
+            if (touched.getAuthorTag() == "Player" && touched.getTag() == "Balloon") {
+                return true;
+            }
+        }
+        return false;
+    }
+}
