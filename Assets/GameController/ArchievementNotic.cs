@@ -16,6 +16,8 @@ public class ArchievementNotic : MonoBehaviour {
     public Text descriptionMsg;
     public GameObject starParticle;
 
+    public GameObject achievementSoundPlayer;
+
     List<ArchievementData> popList = new List<ArchievementData>();
 
     float timer = 0;
@@ -46,6 +48,7 @@ public class ArchievementNotic : MonoBehaviour {
                 Vector3 temp = Camera.main.ScreenToWorldPoint(startPos);
                 temp = new Vector3(temp.x, temp.y, -10f);
                 Instantiate(starParticle, temp, Quaternion.identity);
+                Instantiate(achievementSoundPlayer, Camera.main.transform.position, Quaternion.identity);
 
             }
             else

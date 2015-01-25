@@ -9,32 +9,43 @@ public class Explosion2D : MonoBehaviour {
     public float explosionRadius = 1000;
     public float explosionDelay = 0;
     float timer = 0;
+    bool trigger = false;
 
 
 	
 	// Update is called once per frame
 	void Update () {
-        timer += Time.deltaTime;
-        if(timer >= explosionDelay)
+        if(trigger)
         {
-            Vector2 explosionPos = transform.position;
-            Collider2D[] colliders2D = Physics2D.OverlapCircleAll(explosionPos, explosionRadius);
-            foreach (Collider2D hit in colliders2D)
+
+            timer += Time.deltaTime;
+            if(timer >= explosionDelay)
             {
-                Debug.Log("YEA");
-
-                if (hit && hit.rigidbody2D)
+                Vector2 explosionPos = transform.position;
+                Collider2D[] colliders2D = Physics2D.OverlapCircleAll(explosionPos, explosionRadius);
+                foreach (Collider2D hit in colliders2D)
                 {
-                    AddExplosionForce2D(hit.rigidbody2D, explosionForce, explosionPos, explosionRadius);
+                    Debug.Log("YEA");
 
+                    if (hit && hit.rigidbody2D)
+                    {
+                        AddExplosionForce2D(hit.rigidbody2D, explosionForce, explosionPos, explosionRadius);
+
+                    }
                 }
+                Instantiate(explosionEffect, explosionPos, Quaternion.identity);
+                Destroy(gameObject);
             }
-            Instantiate(explosionEffect, explosionPos, Quaternion.identity);
-            Destroy(gameObject);
         }
-        
 	
 	}
+    void OnCollisionEnter2D(Collision2D something)
+    {
+        if(something.gameObject.tag == "Player")
+        {
+            trigger = true;
+        }
+    }
 
     public static void AddExplosionForce2D(Rigidbody2D body, float expForce, Vector3 expPosition, float expRadius)
     {

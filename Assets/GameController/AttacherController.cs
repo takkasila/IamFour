@@ -29,8 +29,7 @@ public class AttacherController : MonoBehaviour {
     }
 
     void Attach(Collision2D collidingObject) {
-        if (!attachJoint.enabled) {
-            attachJoint.enabled = true;
+        if (collidingObject.gameObject.rigidbody2D != null) {
 
             Vector3 collisionPoint = collidingObject.contacts[0].point;
             attachJoint.connectedBody = collidingObject.gameObject.rigidbody2D;
@@ -41,6 +40,8 @@ public class AttacherController : MonoBehaviour {
             Vector3 thisLocalPosition = thisTransform.InverseTransformPoint(collisionPoint);
             attachJoint.anchor = thisLocalPosition;
             attachJoint.connectedAnchor = collidingObjectLocalPosition;            
+
+            attachJoint.enabled = true;
         }
     }
 
